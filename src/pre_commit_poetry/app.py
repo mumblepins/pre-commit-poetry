@@ -23,7 +23,8 @@ def parse_toml():
         data = toml.load(fh)
     deps = data["tool"]["poetry"]["dependencies"]
     # deps.update(data["tool"]["poetry"]["group"]["dev"]["dependencies"])
-    return deps
+    extras = (data["tool"]["poetry"]).get("extras", {})
+    return deps, list(extras.keys())
 
 
 def poetry_check_lock():
@@ -34,8 +35,12 @@ def poetry_check_lock():
         return not bool(app.run())
 
 
-def poetry_export():
-    with ch_argv(["poetry", "export", "--format", "requirements.txt", "--without-hashes"]):
+def poetry_export(extras=None):
+    args = ["poetry", "export", "--format", "requirements.txt", "--without-hashes"]
+    for extra in extras:
+        args.append("-E")
+        args.append(extra)
+    with ch_argv(args):
         out = BufferedOutput()
         app = PoetryApplication()
         app.catch_exceptions(False)
@@ -49,22 +54,22 @@ def main():
         description="poetry pre-commit hook",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--check", action="store_true", help="check lock file", default=True)
+    parser.add_argument("--no-check", action="store_true", help="check lock file", default=False)
     parser.add_argument(
         "--export",
         help="export requirements.txt location",
         default="src/requirements.txt",
     )
     args = parser.parse_args()
-    if args.check and not poetry_check_lock():
+    if not args.no_check and not poetry_check_lock():
         print("Poetry lock is not up to date")
         sys.exit(1)
     if args.export.strip() != "":
-        depends = parse_toml()
-        preqs = poetry_export()
+        depends, extras = parse_toml()
+        preqs = poetry_export(extras)
         with open(args.export, "w", encoding="utf8") as f:
             for line in preqs.splitlines(True):
-                if line.startswith(tuple(depends.keys())):
+                if line.split("==")[0] in depends:
                     f.write(line)
 
 

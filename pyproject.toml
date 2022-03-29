@@ -10,13 +10,16 @@ readme = "README.md"
 packages = [{ include = "pre_commit_poetry", from = "src" }]
 
 [tool.poetry.scripts]
-pre-commit-poetry='pre_commit_poetry.app:main'
+pre-commit-poetry = 'pre_commit_poetry.app:main'
 
 [tool.poetry.dependencies]
 python = "^3.7"
 poetry = { version = ">=1.2.0a5,<2", allow-prereleases = true }
 toml = "^0.10.2"
+pyyaml = { version = "*", optional = true, allow-prereleases = true }
 
+[tool.poetry.extras]
+test-extra = ["pyyaml"]
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^2.13.0"
@@ -30,7 +33,6 @@ pytest-cov = "^3.0.0"
 pylint-pytest = "^1.1.2"
 types-toml = "^0.10.4"
 
-[tool.poetry.extras]
 
 [build-system]
 requires = ["poetry-core>=1.1.0a7"]
