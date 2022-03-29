@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pre-commit-poetry"
-version = "0.0.1"
+version = "0.0.3"
 description = "Description"
 authors = ["Daniel Sullivan <mumblepins@users.noreply.github.com>"]
 license = "LGPL-3.0-or-later"

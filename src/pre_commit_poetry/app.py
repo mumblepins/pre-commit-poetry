@@ -24,7 +24,7 @@ def parse_toml():
     deps = data["tool"]["poetry"]["dependencies"]
     # deps.update(data["tool"]["poetry"]["group"]["dev"]["dependencies"])
     extras = (data["tool"]["poetry"]).get("extras", {})
-    return deps, list(extras.keys())
+    return [a.lower() for a in deps], list(extras.keys())
 
 
 def poetry_check_lock():
@@ -69,7 +69,7 @@ def main():
         preqs = poetry_export(extras)
         with open(args.export, "w", encoding="utf8") as f:
             for line in preqs.splitlines(True):
-                if line.split("==")[0] in depends:
+                if line.split("==")[0].lower() in depends:
                     f.write(line)
 
 
