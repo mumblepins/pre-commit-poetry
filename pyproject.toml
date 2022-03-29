@@ -1,16 +1,21 @@
 [tool.poetry]
-name = "python-template-repo"
+name = "pre-commit-poetry"
 version = "0.0.1"
 description = "Description"
 authors = ["Daniel Sullivan <mumblepins@users.noreply.github.com>"]
 license = "LGPL-3.0-or-later"
-repository = "https://github.com/mumblepins/python-template-repo/"
-documentation = "https://mumblepins.github.io/python-template-repo/"
+repository = "https://github.com/mumblepins/pre-commit-poetry/"
+documentation = "https://mumblepins.github.io/pre-commit-poetry/"
 readme = "README.md"
-packages = [{ include = "python_template_repo", from="src" }]
+packages = [{ include = "pre_commit_poetry", from = "src" }]
+
+[tool.poetry.scripts]
+pre-commit-poetry='pre_commit_poetry.app:main'
 
 [tool.poetry.dependencies]
 python = "^3.7"
+poetry = { version = ">=1.2.0a5,<2", allow-prereleases = true }
+toml = "^0.10.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -23,6 +28,7 @@ sphinx-rtd-theme = "^1.0"
 mypy = "^0.942"
 pytest-cov = "^3.0.0"
 pylint-pytest = "^1.1.2"
+types-toml = "^0.10.4"
 
 [tool.poetry.extras]
 
@@ -86,3 +92,12 @@ exclude = '''(?x)(
   | dist
   | package_
 )'''
+
+
+[[tool.mypy.overrides]]
+module = "cleo.io.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "poetry.console.*"
+ignore_missing_imports = true

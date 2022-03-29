@@ -1,0 +1,7 @@
+ - id: pre_commit_poetry
+   name: Check Poetry.
+   description: Check poetry lock file and export stripped requirements.
+   entry: pre-commit-poetry
+   pass_filenames: false
+   language: python
+   files: (poetry.lock|pyproject.toml)$
