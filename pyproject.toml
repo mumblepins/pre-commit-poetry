@@ -22,7 +22,7 @@ pyyaml = { version = "*", optional = true, allow-prereleases = true }
 test-extra = ["pyyaml"]
 
 [tool.poetry.group.dev.dependencies]
-pylint = "^2.13.0"
+pylint = "^2.13.9"
 pytest = "^7.1.1"
 coverage = "^6.3.2"
 pre-commit = "^2.15.0"
